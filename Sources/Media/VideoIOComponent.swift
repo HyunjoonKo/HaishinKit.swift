@@ -436,7 +436,7 @@ extension VideoIOComponent {
                 }
                 context?.render(image, to: imageBuffer ?? buffer)
             }
-            renderer?.render(image: image)
+            renderer?.render(image: CIImage(cvPixelBuffer: buffer))
         }
 
         encoder.encodeImageBuffer(
