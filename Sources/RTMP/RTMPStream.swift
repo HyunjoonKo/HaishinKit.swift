@@ -193,6 +193,7 @@ open class RTMPStream: NetStream {
         case appendWithGap
         case live
         case localRecord
+        case liveAndLocalRecord
     }
 
     enum ReadyState: UInt8 {
@@ -372,7 +373,7 @@ open class RTMPStream: NetStream {
 
             if self.info.resourceName == name && self.readyState == .publishing {
                 switch type {
-                case .localRecord:
+                case .localRecord, .liveAndLocalRecord:
                     self.mixer.recorder.fileName = FilenameUtil.fileName(resourceName: self.info.resourceName)
                     self.mixer.recorder.startRunning()
                 default:
@@ -391,7 +392,7 @@ open class RTMPStream: NetStream {
                 objectEncoding: self.objectEncoding,
                 commandName: "publish",
                 commandObject: nil,
-                arguments: [name, type == .localRecord ? RTMPStream.HowToPublish.live.rawValue : type.rawValue]
+                arguments: [name, (type == .localRecord || type == .liveAndLocalRecord) ? RTMPStream.HowToPublish.live.rawValue : type.rawValue]
             )
 
             switch self.readyState {
@@ -531,7 +532,7 @@ open class RTMPStream: NetStream {
             send(handlerName: "@setDataFrame", arguments: "onMetaData", createMetaData())
             mixer.audioIO.codec.startRunning()
             mixer.videoIO.encoder.startRunning()
-            if howToPublish == .localRecord {
+            if howToPublish == .localRecord || howToPublish == .liveAndLocalRecord {
                 mixer.recorder.fileName = FilenameUtil.fileName(resourceName: info.resourceName)
                 mixer.recorder.startRunning()
             }
