@@ -487,7 +487,9 @@ open class RTMPStream: NetStream {
             mixer.videoIO.encoder.delegate = nil
             mixer.audioIO.codec.stopRunning()
             mixer.videoIO.encoder.stopRunning()
-            mixer.recorder.stopRunning()
+            if howToPublish != .liveAndLocalRecord {
+                mixer.recorder.stopRunning()
+            }
         default:
             break
         }
