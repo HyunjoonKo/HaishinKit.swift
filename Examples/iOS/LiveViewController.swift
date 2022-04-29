@@ -156,7 +156,7 @@ final class LiveViewController: UIViewController {
         switch code {
         case RTMPConnection.Code.connectSuccess.rawValue:
             retryCount = 0
-            rtmpStream.publish(Preference.defaultInstance.streamName!)
+            rtmpStream.publish(Preference.defaultInstance.streamName!, type: .liveAndLocalRecord)
             // sharedObject!.connect(rtmpConnection)
         case RTMPConnection.Code.connectFailed.rawValue, RTMPConnection.Code.connectClosed.rawValue:
             guard retryCount <= LiveViewController.maxRetryCount else {

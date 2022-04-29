@@ -14,6 +14,6 @@ struct FilenameUtil {
         if result.count < Int(FILENAME_MAX) {
             return result
         }
-        return String(result[..<result.index(result.startIndex, offsetBy: Int(FILENAME_MAX))])
+        return "\(Int(Date().timeIntervalSince1970))_" + String(result[..<result.index(result.startIndex, offsetBy: Int(FILENAME_MAX))])
     }
 }
