@@ -127,14 +127,13 @@ class AudioNode {
 }
 
 final class MixerNode: AudioNode {
-    private var mixerComponentDescription = AudioComponentDescription(
-        componentType: kAudioUnitType_Mixer,
-        componentSubType: kAudioUnitSubType_MultiChannelMixer,
-        componentManufacturer: kAudioUnitManufacturer_Apple,
-        componentFlags: 0,
-        componentFlagsMask: 0)
-
     init(format: AVAudioFormat) throws {
+        var mixerComponentDescription = AudioComponentDescription(
+            componentType: kAudioUnitType_Mixer,
+            componentSubType: kAudioUnitSubType_MultiChannelMixer,
+            componentManufacturer: kAudioUnitManufacturer_Apple,
+            componentFlags: 0,
+            componentFlagsMask: 0)
         try super.init(description: &mixerComponentDescription)
     }
 
@@ -209,13 +208,6 @@ enum OutputNodeError: Error {
 }
 
 final class OutputNode: AudioNode {
-    private var outputComponentDescription = AudioComponentDescription(
-        componentType: kAudioUnitType_Output,
-        componentSubType: kAudioUnitSubType_GenericOutput,
-        componentManufacturer: kAudioUnitManufacturer_Apple,
-        componentFlags: 0,
-        componentFlagsMask: 0)
-
     var format: AVAudioFormat {
         buffer.format
     }
@@ -231,6 +223,12 @@ final class OutputNode: AudioNode {
             throw OutputNodeError.unableToAllocateBuffer
         }
         self.buffer = buffer
+        var outputComponentDescription = AudioComponentDescription(
+            componentType: kAudioUnitType_Output,
+            componentSubType: kAudioUnitSubType_GenericOutput,
+            componentManufacturer: kAudioUnitManufacturer_Apple,
+            componentFlags: 0,
+            componentFlagsMask: 0)
         try super.init(description: &outputComponentDescription)
     }
 
